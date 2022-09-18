@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Routes,
+} from "react-router-dom";
 import Header from "./common/header/Header";
 import Pages from "./pages/Pages";
 import Data from "./components/Data";
 import Cart from "./common/Cart/Cart";
 import AddProduct from "./common/AddProduct";
 import Footer from "./common/footer/Footer";
-import Login from "../src/components/Login"
-import Register from "../src/components/Register"
+import Login from "../src/components/Login";
+import Register from "../src/components/Register";
 import Sdata from "./components/shops/Sdata";
 
 function App() {
@@ -86,35 +91,50 @@ function App() {
     <>
       <Router>
         <Header CartItem={CartItem} />
-        <Switch>
-          <Route path="/" exact>
-            <Pages
-              productItems={productItems}
-              addToCart={addToCart}
-              shopItems={shopItems}
-            />
-          </Route>
-          <Route path="/cart" exact>
-            <Cart
-              CartItem={CartItem}
-              addToCart={addToCart}
-              decreaseQty={decreaseQty}
-            />
-          </Route>
-          <Route path="/addproduct" exact>
-            <AddProduct
-              productItems={productItems}
-              addToCart={addToCart}
-              shopItems={shopItems}
-            />
-          </Route>
-          <Route path="/login" exact>
-          <Login />
-          </Route>
-          <Route path="/register" exact>
-          <Register />
-          </Route>
-        </Switch>
+        {/* <Switch> */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Pages
+                productItems={productItems}
+                addToCart={addToCart}
+                shopItems={shopItems}
+              />
+            }
+          />
+        </Routes>
+        <Routes>
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                CartItem={CartItem}
+                addToCart={addToCart}
+                decreaseQty={decreaseQty}
+              />
+            }
+          />
+        </Routes>
+        <Routes>
+          <Route
+            path="/addproduct"
+            element={
+              <AddProduct
+                productItems={productItems}
+                addToCart={addToCart}
+                shopItems={shopItems}
+              />
+            }
+          />
+        </Routes>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+
         <Footer />
       </Router>
     </>

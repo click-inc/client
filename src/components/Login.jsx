@@ -77,10 +77,20 @@ export default function SignIn() {
           password: password,
         })
         .then((response) => {
-          console.log(response.data.user.type);
+          console.log(response.data.user);
+          localStorage.setItem('token',response.data.token)
           localStorage.setItem('type',response.data.user.type)
+          localStorage.setItem('id',response.data.user._id)
+          localStorage.setItem('login',true)
           if (response.data.user.type) {
             setValid(true);
+            if(response.data.user.type=="seller"){
+              navigate('/addproduct')
+            }
+            else{
+              navigate('/')
+            }
+            
           }
         });
     } catch (error) {
