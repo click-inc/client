@@ -13,28 +13,24 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-const axios = require('axios').default;
+import { useNavigate } from "react-router-dom";
+const axios = require("axios").default;
 const handleLogin = () => {
-    const username = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-  
-    console.log(username, password);
-    axios
-    .post('http://localhost:8000/users/login', {
-        email:username,
-        password:password
-    })
-    .then((response) => {
-        console.log(response.data);
-        
-    });
-
-  };
+  // const username = document.getElementById("email").value;
+  // const password = document.getElementById("password").value;
+  // axios
+  // .post('http://localhost:8000/users/login', {
+  //     email:username,
+  //     password:password
+  // })
+  // .then((response) => {
+  //     console.log(response.data);
+  // });
+};
 function Copyright(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
- 
+  const [valid, setValid] = useState(false);
 
   const handlePassword = (e) => {
     console.log(e);
@@ -63,13 +59,37 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const [valid, setValid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    const username = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    try {
+      axios
+        .post("http://localhost:8000/users/login", {
+          email: username,
+          password: password,
+        })
+        .then((response) => {
+          console.log(response.data.user.type);
+          localStorage.setItem('type',response.data.user.type)
+          if (response.data.user.type) {
+            setValid(true);
+          }
+        });
+    } catch (error) {
+      console.log(error.data);
+    }
+
+    if (!valid) {
+      console.log("Invalid");
+    }
   };
 
   return (
