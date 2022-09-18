@@ -13,10 +13,22 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
+const axios = require('axios').default;
 const handleLogin = () => {
     const username = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+  
     console.log(username, password);
+    axios
+    .post('http://localhost:8000/users/login', {
+        email:username,
+        password:password
+    })
+    .then((response) => {
+        console.log(response.data);
+        
+    });
+
   };
 function Copyright(props) {
   const [username, setUsername] = useState("");
