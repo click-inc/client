@@ -39,7 +39,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const [value, setValue] = React.useState("seller");
+  const [value, setValue] = React.useState('seller');
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -51,9 +51,9 @@ export default function SignUp() {
     const lname = document.getElementById("lastName").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    console.log(value);
+
     axios
-      .post("http://localhost:5000/api/auth/registerorg", {
+      .post("http://localhost:8000/users", {
         fname: fname,
         lname: lname,
         email: email,
