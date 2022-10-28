@@ -18,7 +18,7 @@ const ShopCart = ({ shopItems, addToCart }) => {
 // if(id=="null"){
   setOpen(true);
  setId(e.target.value)
-console.log(id)
+console.log(e.target.value)
 // }
 // else{
 //   setId("null");

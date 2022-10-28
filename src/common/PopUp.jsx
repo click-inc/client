@@ -1,22 +1,85 @@
 import React from "react";
+
 import "../components/shops/style.css";
+import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import { useState } from "react";
 function ModalDialog() {
   const [isShow, invokeModal] = React.useState(false);
+  const [isShow1, invokeModal2] = React.useState(false);
+  const [title1, setTitle1] = useState("");
+  const [cat, setCat1] = useState("");
+  const [desc, setDesc1] = useState("");
+  const [disc, setDisc1] = useState("");
+  const [pri, setPri1] = useState("");
+  const [im, setIm1] = useState("");
+  // const [pri,setPri]=useState('')
+  const addTitle = (e) => {
+    setTitle1(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const setCat = (e) => {
+    setCat1(e.target.value);
+    console.log(e.target.value);
+  };
+  const setDesc = (e) => {
+    setDesc1(e.target.value);
+    console.log(e.target.value);
+  };
+  const setDisc = (e) => {
+    setDisc1(e.target.value);
+    console.log(e.target.value);
+  };
+  const setPri = (e) => {
+    setPri1(e.target.value);
+    console.log(e.target.value);
+  };
+  const setIm = (e) => {
+    setIm1(e.target.value);
+    console.log(e.target.value);
+  };
+
   const initModal = () => {
     return invokeModal(!false);
   };
   const closemodel = () => {
     return invokeModal(false);
   };
-  const addProduct=()=>{
-    const title=document.getElementById('title').value
-    const des=document.getElementById('des').value
-    const dis=document.getElementById('dis').value
-    const img=document.getElementById('img').value
-    const price=document.getElementById('price').value
-console.log(title,des,dis,img,price)
+  const successfull=()=>{
+    return invokeModal2(false)
   }
+  const addProduct = () => {
+    const title = title1;
+    const owner = localStorage.getItem("id");
+    const des = desc
+    const dis = disc
+    const img = im
+    const price = pri
+    const category =cat
+    console.log(owner, des, img, category, dis, img, title);
+
+      axios
+      .post("http://localhost:8001/items", {
+        owner:owner,
+        name:title,
+        description:des,
+        category:category,
+        price:price,
+        image:'flash-1.png'
+
+      })
+      .then((response) => {
+        console.log(response.data)
+        if(response.data){
+
+          console.log("Ppp")
+          invokeModal2(true)
+          invokeModal(false)
+        }
+
+    })
+  };
   return (
     <>
       <Button variant="primary" onClick={initModal}>
@@ -40,7 +103,7 @@ console.log(title,des,dis,img,price)
                     role="form"
                   >
                     <div class="form-group">
-                      <label for="qty"  className="forms">
+                      <label for="qty" className="forms">
                         Product Title
                       </label>
                       <div className="forms">
@@ -50,6 +113,8 @@ console.log(title,des,dis,img,price)
                           name="qty"
                           id="title"
                           placeholder="Product Title"
+                          value={title1}
+                          onChange={addTitle}
                         />
                       </div>
                     </div>
@@ -63,6 +128,8 @@ console.log(title,des,dis,img,price)
                           class="form-control"
                           name="date_start"
                           id="des"
+                          value={desc}
+                          onChange={setDesc}
                           placeholder="Description"
                         />
                       </div>
@@ -76,6 +143,8 @@ console.log(title,des,dis,img,price)
                           name="date_finish"
                           id="price"
                           placeholder="$"
+                          value={pri}
+                          onChange={setPri}
                         />
                       </div>
                       <div className="forms">
@@ -88,6 +157,22 @@ console.log(title,des,dis,img,price)
                           name="date_finish"
                           id="dis"
                           placeholder="Discount"
+                          value={disc}
+                          onChange={setDisc}
+                        />
+                      </div>
+                      <div className="forms">
+                        <label class="control-label small" for="date_finish">
+                          category
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="date_finish"
+                          id="cat"
+                          placeholder="Discount"
+                          value={cat}
+                          onChange={setCat}
                         />
                       </div>
                     </div>
@@ -97,7 +182,13 @@ console.log(title,des,dis,img,price)
                       </label>
                       <div class="col-sm-3">
                         {/* <label class="control-label small" for="file_img">Product Image (jpg/png):</label> */}
-                        <input type="file" name="file_img"  id="img"/>
+                        <input
+                          type="file"
+                          name="file_img"
+                          id="img"
+                          value={im}
+                          onChange={setIm}
+                        />
                       </div>
                     </div>
 
@@ -117,11 +208,30 @@ console.log(title,des,dis,img,price)
             Close
           </Button>
           <Button variant="dark" onClick={addProduct}>
-          Add Product
+            Add Product
           </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={isShow1} className="popup-container">
+        <Modal.Header closeButton onClick={initModal}>
+          <Modal.Title>Succuessfully</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <>
+            <h3>Product addedd successfully</h3>
+          </>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={successfull}>
+           Ok
+          </Button>
+          {/* <Button variant="dark" onClick={addProduct}>
+            Add Product
+          </Button> */}
         </Modal.Footer>
       </Modal>
     </>
   );
 }
+
 export default ModalDialog;

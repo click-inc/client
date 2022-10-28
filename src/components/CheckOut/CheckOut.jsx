@@ -51,6 +51,10 @@ export default function Checkout() {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    if(activeStep==2){
+      
+      console.log("Finished")
+    }
   };
 
   const handleBack = () => {

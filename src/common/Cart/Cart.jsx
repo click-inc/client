@@ -12,6 +12,10 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
+    localStorage.setItem("ItemArray",JSON.stringify(CartItem))
+    localStorage.setItem('totalPayment',totalPrice)
+   
+    console.log(CartItem)
     setOpen(true);
   };
 
@@ -92,7 +96,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
               <h4>Total Price :</h4>
               <h3>${totalPrice}.00</h3>
               <button onClick={handleClickOpen} className="button-check">
-                Check out
+              Place order
               </button>
             </div>
             <Dialog

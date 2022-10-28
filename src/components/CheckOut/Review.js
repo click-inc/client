@@ -4,8 +4,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-
-const products = [
+import { useEffect } from 'react';
+import { useState } from 'react';
+const products1 = [
   {
     name: 'Product 1',
     desc: 'A nice thing',
@@ -36,17 +37,24 @@ const payments = [
   { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
   { name: 'Expiry date', detail: '04/2024' },
 ];
-
+const products=localStorage.getItem('ItemArray')
 export default function Review() {
+  const [array,setArray]=useState([]);
+  useEffect(()=>{
+    const products=localStorage.getItem('ItemArray')
+    setArray(products)
+  })
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Order summary
       </Typography>
       <List disablePadding>
-        {products.map((product) => (
+     
+        {products1.map((product) => (
+          
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
+            <ListItemText primary={product.name} />
             <Typography variant="body2">{product.price}</Typography>
           </ListItem>
         ))}
@@ -63,7 +71,7 @@ export default function Review() {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
+          <Typography gutterBottom>{localStorage.getItem('fname')+" "+ localStorage.getItem('lname')}</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
