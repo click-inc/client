@@ -5,6 +5,10 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { useState } from "react";
 function ModalDialog() {
+  const buttonStyle={
+    width:'300px',
+    marginLeft:'300px'
+  }
   const [isShow, invokeModal] = React.useState(false);
   const [isShow1, invokeModal2] = React.useState(false);
   const [title1, setTitle1] = useState("");
@@ -50,6 +54,13 @@ function ModalDialog() {
     return invokeModal2(false)
   }
   const addProduct = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+        userId: localStorage.getItem("id"),
+      },
+    };
     const title = title1;
     const owner = localStorage.getItem("id");
     const des = desc
@@ -66,9 +77,9 @@ function ModalDialog() {
         description:des,
         category:category,
         price:price,
-        image:'flash-1.png'
+        image:im
 
-      })
+      },config)
       .then((response) => {
         console.log(response.data)
         if(response.data){
@@ -82,7 +93,7 @@ function ModalDialog() {
   };
   return (
     <>
-      <Button variant="primary" onClick={initModal}>
+      <Button variant="primary" onClick={initModal} style={buttonStyle}>
         Add Product
       </Button>
       <Modal show={isShow} className="popup-container">

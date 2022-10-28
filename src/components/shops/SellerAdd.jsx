@@ -6,29 +6,61 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import axios from "axios";
+import { useEffect } from "react";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const ShopCart = ({ shopItems, addToCart }) => {
+  const [productArray, setProductArray] = useState([]);
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+      userId: localStorage.getItem("id"),
+    },
+  };
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost:8001/items",
+
+        config
+      )
+      .then((response) => {
+        console.log(response.data);
+        setProductArray(response.data);
+      });
+  }, []);
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
-  const [id,setId]=React.useState(0);
-  const handleClickOpen = (e) => {
-// if(id=="null"){
-  setOpen(true);
- setId(e.target.value)
-console.log(e.target.value)
-// }
-// else{
-//   setId("null");
-//   setId(e.target.value)
-//   console.log(e.target.value)
-// }
-  //  console.log(e.target.value)
+  const [id, setId] = React.useState(0);
+  const handleClickOpen = (event) => {
+    const config1 = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+        userId: localStorage.getItem("id"),
+        id: event.target.valuue,
+      },
+    };
+    // setOpen(true);
+    // setId(e.target.value);
+    console.log(event.target.value);
+    axios
+      .get(
+        "http://localhost:8001/items/one",
+
+        config1
+      )
+      .then((response) => {
+        console.log(response.data);
+      });
   };
   const handleClickOpen1 = (e) => {
-    setId(e.target.value)
+    setId(e.target.value);
+
     setOpen1(true);
   };
 
@@ -36,28 +68,27 @@ console.log(e.target.value)
     setOpen1(false);
   };
   const handleClose = () => {
-  
     setOpen(false);
 
-    console.log(id)
+    console.log(id);
   };
   const [count, setCount] = useState(0);
   const increment = () => {
     setCount(count + 1);
   };
 
-  const deleteProduct=()=>{
-    console.log("delete")
-  }
+  const deleteProduct = () => {
+    console.log("delete");
+  };
   return (
     <>
-      {shopItems.map((shopItems, index) => {
+      {productArray.map((shopItems, index) => {
         return (
           <div className="box">
             <div className="product mtop">
               <div className="img">
-                <span className="discount">{shopItems.discount}% Off</span>
-                <img src={shopItems.cover} alt="" />
+                <span className="discount">{10}% Off</span>
+                <img src={`./images/flash/` + shopItems.image} alt="" />
                 <div className="product-like">
                   <label>{count}</label> <br />
                   <i className="fa-regular fa-heart" onClick={increment}></i>
@@ -77,10 +108,10 @@ console.log(e.target.value)
                   {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                  <button onClick={handleClickOpen} value={shopItems.id}>
-                    <i className="fa fa-pen" value={shopItems.id}></i>
+                  <button onClick={handleClickOpen} value={shopItems._id}>
+                    <i className="fa fa-pen" value={shopItems._id}></i>
                   </button>
-                  <button onClick={handleClickOpen1} value={shopItems.id}>
+                  <button onClick={handleClickOpen1} value={shopItems._id}>
                     <i className="fa fa-trash"></i>
                   </button>
                 </div>
@@ -94,7 +125,6 @@ console.log(e.target.value)
               onClose={handleClose}
               aria-describedby="alert-dialog-slide-description"
             >
-          
               <DialogContent>
                 <div class="container">
                   <section class="panel panel-default">
@@ -186,11 +216,12 @@ console.log(e.target.value)
                 </div>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Disagree</Button>
-                <Button onClick={handleClose}>Agree</Button>
+                <Button onClick={handleClose}>Edit</Button>
+                <Button onClick={handleClose}>Close</Button>
               </DialogActions>
             </Dialog>
-            <Dialog
+
+            {/* <Dialog
               open={open1}
               TransitionComponent={Transition}
               keepMounted
@@ -206,6 +237,30 @@ console.log(e.target.value)
               <DialogActions>
                 <Button onClick={handleClose1}>Disagree</Button>
                 <Button onClick={deleteProduct}>Agree</Button>
+              </DialogActions>
+            </Dialog> */}
+
+            <Dialog
+              open={open1}
+              onClose={handleClose1}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Use Google's location service?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Let Google help apps determine location. This means sending
+                  anonymous location data to Google, even when no apps are
+                  running.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose1}>Disagree</Button>
+                <Button onClick={handleClose} autoFocus>
+                  Agree
+                </Button>
               </DialogActions>
             </Dialog>
           </div>

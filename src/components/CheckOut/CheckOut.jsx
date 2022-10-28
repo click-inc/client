@@ -9,6 +9,11 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
@@ -48,6 +53,23 @@ function getStepContent(step) {
 const theme = createTheme();
 
 export default function Checkout() {
+  const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickOpen1 = () => {
+    setOpen(true);
+  };
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleClose1 = () => {
+    setOpen(false);
+  };
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -116,8 +138,7 @@ export default function Checkout() {
               alert("Order Fail");
             }
           });
-      }
-      else{
+      } else {
         axios
           .post(
             "http://localhost:8007/card",
@@ -125,8 +146,8 @@ export default function Checkout() {
               token: localStorage.getItem("token"),
               cardName: localStorage.getItem("cardName"),
               cardNumber: localStorage.getItem("cardNumber"),
-              cvv:localStorage.getItem("cvv"),
-              exp:localStorage.getItem("exp"),
+              cvv: localStorage.getItem("cvv"),
+              exp: localStorage.getItem("exp"),
               totalPayment: localStorage.getItem("totalPayment"),
             },
             config
@@ -135,6 +156,7 @@ export default function Checkout() {
             console.log(response.data.status);
             if (response.data.status == "success") {
               // placeOrder();
+              setOpen(true)
             } else {
               alert("Order Fail");
             }
@@ -208,6 +230,56 @@ export default function Checkout() {
                 </Box>
               </React.Fragment>
             )}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title"></DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <Typography variant="h5" gutterBottom>
+                    Thank you for your order.
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Your order number is #2001539. We have emailed your order
+                    confirmation, and will send you an update when your order
+                    has shipped.
+                  </Typography>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Ok</Button>
+                <Button onClick={handleClose} autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Dialog
+              open={open1}
+              onClose={handleClose1}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title"></DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <Typography variant="h5" gutterBottom>
+                    Your Order Not Successfully Places
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Your Order has not been place successfully.Plese Try Again.
+                  </Typography>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose1}>Disagree</Button>
+                <Button onClick={handleClose1} autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
           </React.Fragment>
         </Paper>
         <Copyright />

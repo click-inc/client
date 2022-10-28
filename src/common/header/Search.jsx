@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import logo from "../../components/assets/images/logo1.jpg";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Search = ({ CartItem }) => {
+  const navigate=useNavigate();
   // fixed Header
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+      userId: localStorage.getItem("id"),
+    },
+  };
 
   const [login,setLogin]=useState(false)
   window.addEventListener("scroll", function () {
@@ -17,7 +26,23 @@ const Search = ({ CartItem }) => {
       setLogin(true)
     }
   })
+const logout=()=>{
+  axios
+      .post(
+        "http://localhost:8000/users/logout",
+        {
+          
+        },
+        config
+      )
+      .then((response) => {
+        setLogin(false)
+        localStorage.setItem('login',false)
+        navigate('/')
+        
+      });
 
+}
   return (
     <>
       <section className="search">
@@ -45,7 +70,7 @@ const Search = ({ CartItem }) => {
             {login &&
                <div className="loginChip">
                <Link to="/login" className="linkEdit">
-               <Button variant="outlined">Logout</Button>
+               <Button variant="outlined" onClick={logout}>Logout</Button>
                  {/* <i className="fa fa-user icon-circle"></i> */}
                </Link>
               
