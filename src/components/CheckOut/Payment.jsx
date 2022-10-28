@@ -25,7 +25,7 @@ export default function PaymentForm() {
     }
   };
   const cardName=(e)=>{
-localStorage.setItem('cardNumber',e.target.value)
+localStorage.setItem('cardName',e.target.value)
 
   }
   const cardNumber=(e)=>{
